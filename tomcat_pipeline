@@ -1,0 +1,43 @@
+pipeline{
+	agent any
+	stages{
+		stage('clone source code'){
+			steps{
+				git 'https://github.com/patilume/maven-project.git'
+			}
+		}
+		stage('compile cource code'){
+			steps{
+				withMaven(maven : 'maven-3.5.2'){
+					sh 'mvn compile'
+				}
+			}
+		}
+		stage('test'){
+				steps{
+					withMaven(maven : 'maven-3.5.2'){
+						sh 'mvn test'
+				}
+			}
+		}
+		stage('package'){
+				steps{
+					withMaven(maven : 'maven-3.5.2'){
+						sh 'mvn package'
+				}
+			}
+		}
+		stage('install'){
+				steps{
+					withMaven(maven : 'maven-3.5.2'){
+						sh 'mvn install'
+				}
+			}
+		}
+		stage('deploy to tomcat'){
+			steps{
+				deploy adapters: [tomcat7(credentialsId: 'admin2', url: 'http://54.172.71.240:8080')], contextPath: null, war: '**/*.war'
+			}
+		}
+	}
+}
