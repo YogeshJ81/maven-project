@@ -3,7 +3,7 @@ pipeline{
 	stages{
 		stage('clone source code'){
 			steps{
-				git 'https://github.com/patilume/maven-project.git'
+				git 'https://github.com/YogeshJ81/maven-project.git'
 			}
 		}
 		stage('compile cource code'){
@@ -36,7 +36,7 @@ pipeline{
 		}
 		stage('deploy to tomcat'){
 			steps{
-				deploy adapters: [tomcat7(credentialsId: 'admin2', url: 'http://54.172.71.240:8080')], contextPath: null, war: '**/*.war'
+				deploy adapters: [tomcat7(credentialsId: 'admin2', url: 'http://3.15.45.118:8080')], contextPath: null, war: '**/*.war'
 			}
 		}
 	}
