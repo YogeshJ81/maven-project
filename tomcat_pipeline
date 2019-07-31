@@ -36,7 +36,10 @@ pipeline{
 		}
 		stage('deploy to tomcat'){
 			steps{
-				deploy adapters: [tomcat7(credentialsId: 'tomcatuser', url: 'http://3.15.45.118:8080')], contextPath: null, war: '**/*.war'
+			sshagent(['Jenkin_ec2-user']){
+			sh 'scp -o StrictHostKeyChecking=no webapp/target/*.war ec2-user@3.15.45.118:/usr/share/tomcat/webapps/' 
+			}
+				//deploy adapters: [tomcat7(credentialsId: 'tomcatuser', url: 'http://3.15.45.118:8080')], contextPath: null, war: '**/*.war'
 			}
 		}
 	}
