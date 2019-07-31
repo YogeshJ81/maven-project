@@ -3,7 +3,7 @@ pipeline{
 	stages{
 		stage('clone source code'){
 			steps{
-				git 'https://github.com/YogeshJ81/maven-project.git'
+				git   'https://github.com/YogeshJ81/maven-project.git'
 			}
 		}
 		stage('compile cource code'){
