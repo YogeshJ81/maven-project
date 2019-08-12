@@ -13,7 +13,7 @@ node {
    }
 
   stage('Upload Image to DockerHub'){
-    withCredentials([string(credentialsId: 'Jenkins Docker', variable: 'mydockerhub')]) {
+    withCredentials([string(credentialsId: '6d4059ec-1d96-4d46-8ee7-7afd4c3d6861', variable: 'DockerJenkins')]) {
 		// some block
 		sh "docker login -u yogesh0051 -p ${mydockerhub}"
 		}
