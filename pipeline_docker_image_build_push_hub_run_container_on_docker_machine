@@ -9,7 +9,7 @@ node {
     sh "${mvnHome}/bin/mvn clean package"
    }
   stage('Build Docker Image'){
-    sh 'docker build /var/lib/jenkins/workspace/DockerPipeline/ -t yogesh/my-tomcat-app:1.0.0'
+    sh 'docker build https://github.com/YogeshJ81/maven-project/blob/master/Dockerfile -t yogesh/my-tomcat-app:1.0.0'
    }
 
   stage('Upload Image to DockerHub'){
