@@ -2,4 +2,4 @@
 FROM tomcat:8.0
 MAINTAINER yogeshdockertomcatimage
 # COPY path-to-your-application-war path-to-webapps-in-docker-tomcat
-Add **/*.war /usr/local/tomcat/webapps/
+COPY /webapp/target/webapp.war /usr/local/tomcat/webapps/
