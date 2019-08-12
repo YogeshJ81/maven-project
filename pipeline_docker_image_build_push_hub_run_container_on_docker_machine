@@ -12,14 +12,6 @@ node {
     sh 'docker build /var/lib/jenkins/workspace/DockerPipeline/ -t yogesh/my-tomcat-app:1.0.0'
    }
 
-  stage('Upload Image to DockerHub'){
-    withCredentials([string(credentialsId: '', variable: 'mydockerhub')]) {
-		// some block
-		sh "docker login -u yogesh0051 -p ${mydockerhub}"
-		}
-
-		sh 'docker push yogesh/my-tomcat-app:1.0.0'
-  }
   
   stage('Remove Old Containers'){
     sshagent(['tomcat-deploy']) {
