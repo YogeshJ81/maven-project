@@ -1,0 +1,43 @@
+node {
+  stage('Git Checkout'){
+        git url: 'https://github.com/patilume/maven-project.git',
+          branch:'master'
+  }
+  
+  stage('MVN Package'){
+    def mvnHome = tool name: 'maven', type: 'maven'
+    sh "${mvnHome}/bin/mvn clean package"
+   }
+  stage('Build Docker Image'){
+    sh 'docker build /var/lib/jenkins/workspace/pipeline_docker_tomcat/ -t patilume/my-tomcat-app:1.0.0'
+   }
+
+  stage('Upload Image to DockerHub'){
+    withCredentials([string(credentialsId: 'my-docker-hub', variable: 'mydockerhub')]) {
+		// some block
+		sh "docker login -u patilume -p ${mydockerhub}"
+		}
+
+		sh 'docker push patilume/my-tomcat-app:1.0.0'
+  }
+  
+  stage('Remove Old Containers'){
+    sshagent(['tomcat-deploy']) {
+      try{
+        def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.46.70'
+        def dockerRM = 'docker rm -f my-app'
+        sh "${sshCmd} ${dockerRM}"
+      }catch(error){
+
+      }
+    }
+  }
+  stage('Deploy-Dev-Env'){
+    sshagent(['tomcat-deploy']) {
+      //input 'Deploy  to tomcat?'
+      def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.46.70'
+      def dockerRun = 'docker run -d -p 8080:8080 --name my-app patilume/my-tomcat-app:1.0.0'
+      sh "${sshCmd} ${dockerRun}"
+    }
+  }
+}
