@@ -1,6 +1,6 @@
 node {
   stage('Git Checkout'){
-        git url: 'https://github.com/patilume/maven-project.git',
+        git url: 'https://github.com/YogeshJ81/maven-project.git',
           branch:'master'
   }
   
@@ -9,22 +9,22 @@ node {
     sh "${mvnHome}/bin/mvn clean package"
    }
   stage('Build Docker Image'){
-    sh 'docker build /var/lib/jenkins/workspace/pipeline_docker_tomcat/ -t patilume/my-tomcat-app:1.0.0'
+    sh 'docker build /var/lib/jenkins/workspace/pipeline_docker_tomcat/ -t yogesh/my-tomcat-app:1.0.0'
    }
 
   stage('Upload Image to DockerHub'){
     withCredentials([string(credentialsId: 'my-docker-hub', variable: 'mydockerhub')]) {
 		// some block
-		sh "docker login -u patilume -p ${mydockerhub}"
+		sh "docker login -u yogesh0051 -p ${mydockerhub}"
 		}
 
-		sh 'docker push patilume/my-tomcat-app:1.0.0'
+		sh 'docker push yogesh/my-tomcat-app:1.0.0'
   }
   
   stage('Remove Old Containers'){
     sshagent(['tomcat-deploy']) {
       try{
-        def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.46.70'
+        def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@18.220.88.220'
         def dockerRM = 'docker rm -f my-app'
         sh "${sshCmd} ${dockerRM}"
       }catch(error){
@@ -35,8 +35,8 @@ node {
   stage('Deploy-Dev-Env'){
     sshagent(['tomcat-deploy']) {
       //input 'Deploy  to tomcat?'
-      def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@172.31.46.70'
-      def dockerRun = 'docker run -d -p 8080:8080 --name my-app patilume/my-tomcat-app:1.0.0'
+      def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@18.220.88.220'
+      def dockerRun = 'docker run -d -p 8080:8080 --name my-app yogesh/my-tomcat-app:1.0.0'
       sh "${sshCmd} ${dockerRun}"
     }
   }
