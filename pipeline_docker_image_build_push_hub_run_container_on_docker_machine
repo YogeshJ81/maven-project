@@ -13,7 +13,7 @@ node {
    }
 
   stage('Upload Image to DockerHub'){
-    withCredentials([string(credentialsId: 'my-docker-hub', variable: 'mydockerhub')]) {
+    withCredentials([string(credentialsId: 'yogesh0051', variable: 'mydockerhub')]) {
 		// some block
 		sh "docker login -u yogesh0051 -p ${mydockerhub}"
 		}
