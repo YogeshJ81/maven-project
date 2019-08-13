@@ -28,7 +28,7 @@ node {
     sshagent(['tomcat-deploy']) {
       //input 'Deploy  to tomcat?'
       def sshCmd = 'ssh -o StrictHostKeyChecking=no ec2-user@18.220.88.220'
-      def dockerRun = 'docker run -d -p 8080:8080 --name my-app yogesh/my-tomcat-app:1.0.0'
+      def dockerRun = 'docker run -d -p 8080:80 --name my-app yogesh/my-tomcat-app:1.0.0'
       sh "${sshCmd} ${dockerRun}"
     }
   }
